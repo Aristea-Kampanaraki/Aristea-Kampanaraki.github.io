@@ -1,0 +1,1718 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Data Analytics Portfolio - Version 1 Final</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* Version 1: Image-Dominant Layout - FINAL */
+			
+			/* HEADER BEHAVIOR - Template's scrollex: starts normal, becomes sticky after banner */
+			#header {
+				/* Remove always-fixed positioning */
+				/* Header will be controlled by scrollex JavaScript */
+				position: fixed !important;
+				top: 0;
+				left: 0;
+				right: 0;
+				width: 100%;
+				z-index: 10000;
+				background: #242943;
+				height: 3.25em;
+				line-height: 3.25em;
+				-moz-transition: opacity 0.35s ease, -moz-transform 0.35s ease;
+				-webkit-transition: opacity 0.35s ease, -webkit-transform 0.35s ease;
+				-ms-transition: opacity 0.35s ease, -ms-transform 0.35s ease;
+				transition: opacity 0.35s ease, transform 0.35s ease;
+			}
+			
+			/* Header starts transparent/overlaying banner */
+			#header.alt {
+				background: transparent;
+			}
+			
+			/* Header becomes solid when scrolling past banner */
+			#header.reveal {
+				background: #242943;
+			}
+			
+			/* Mobile: Make header text smaller to fit - Force override */
+			@media screen and (max-width: 736px) {
+				#header {
+					height: 2.75em;
+					line-height: 2.75em;
+				}
+				#header .logo {
+					font-size: 0.75em !important;
+					white-space: nowrap !important;
+				}
+				
+				#header .logo strong,
+				#header .logo span {
+					display: inline !important;
+				}
+			}
+			
+			@media screen and (max-width: 480px) {
+				#header .logo {
+					font-size: 0.65em !important;
+				}
+			}
+			
+			@media screen and (max-width: 360px) {
+				#header .logo {
+					font-size: 0.55em !important;
+				}
+			}
+
+			/* Mobile menu popup (Home / About Me / Projects / Contact) — explicit,
+			   matching the template's own default exactly. Added as insurance so
+			   this can't drift between pages regardless of caching; the source
+			   CSS was already identical (neither page had any override here). */
+			#menu ul.links > li > a:not(.button) {
+				font-size: 0.8em !important;
+				line-height: 4em !important;
+			}
+			
+			/* Body padding for fixed header */
+			body {
+				padding-top: 0; /* No padding needed - header overlays banner initially */
+			}
+
+			/* ROOT CAUSE of titles getting cut off / page overflowing on mobile:
+			   the template sets header.major { width: max-content }, which sizes
+			   the heading block to its full UNWRAPPED width. For long titles that's
+			   wider than the viewport, pushing the page wider than the screen —
+			   which is also what "page doesn't fit" was actually caused by. */
+			@media screen and (max-width: 736px) {
+				header.major {
+					width: 100% !important;
+					max-width: 100% !important;
+				}
+				header.major h1, header.major h2 {
+					overflow-wrap: break-word;
+					word-wrap: break-word;
+				}
+			}
+
+			/* Safety net: stop any oversized child (badge row, wide image, etc.)
+			   from forcing horizontal scroll / page not fitting the viewport on mobile */
+			@media screen and (max-width: 736px) {
+				html, body {
+					overflow-x: hidden;
+					max-width: 100vw;
+				}
+			}
+			
+			/* Fix menu navigation - prevent header from covering sections.
+			   This is a static fallback for native browser anchor-jumps (e.g.
+			   before the JS below has attached, or a direct #footer link) — the
+			   JS handles the actual menu-driven scroll-to-Contact with a
+			   precisely measured header height, not this fixed guess. */
+			:root {
+				--header-h: 52px;
+			}
+			html {
+				scroll-padding-top: var(--header-h);
+			}
+			#one, #two, #footer {
+				scroll-margin-top: var(--header-h);
+			}
+			
+			/* BANNER - Reset to template behavior (overlaps with header) */
+			#banner {
+				/* Let banner use template's positioning */
+				/* Header will overlay it initially */
+			}
+			
+			.enhanced-tiles {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 2.5em;
+				padding: 4em 0;
+				max-width: 1400px;
+				margin: 0 auto;
+			}
+
+			.project-card {
+				background: #ffffff;
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+				transition: transform 0.3s ease, box-shadow 0.3s ease;
+				display: flex;
+				flex-direction: column;
+				height: 555px;
+			}
+
+			.project-card:hover {
+				transform: translateY(-10px);
+				box-shadow: 0 16px 50px rgba(0, 0, 0, 0.2);
+			}
+
+			/* Template Accent Colors - All Cyan */
+			.project-card:nth-child(6n+1) {
+				border-top: 4px solid #6fc3df;
+			}
+
+			.project-card:nth-child(6n+2) {
+				border-top: 4px solid #6fc3df;
+			}
+
+			.project-card:nth-child(6n+3) {
+				border-top: 4px solid #6fc3df;
+			}
+
+			.project-card:nth-child(6n+4) {
+				border-top: 4px solid #6fc3df;
+			}
+
+			.project-card:nth-child(6n+5) {
+				border-top: 4px solid #6fc3df;
+			}
+
+			.project-card:nth-child(6n+6) {
+				border-top: 4px solid #6fc3df;
+			}
+
+			.project-image-wrapper {
+				width: 100%;
+				height: 433px;
+				overflow: hidden;
+				background: #f5f5f5;
+				position: relative;
+			}
+
+			.project-hero-image {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center;
+				transition: transform 0.3s ease;
+			}
+
+			.project-card:hover .project-hero-image {
+				transform: scale(1.05);
+			}
+
+			.project-content {
+				padding: 1.0em 2em 2em 2em;
+				display: flex;
+				flex-direction: column;
+				flex: 1;
+			}
+
+			/* Template Typography Sizes */
+			.project-title {
+				font-size: 1.5em;
+				font-weight: 600;
+				color: #242943;
+				margin: 0 0 0.2em 0;
+				line-height: 0.8;
+			}
+			
+			/* Tech Stack Styling */
+			.tech-stack {
+				margin-bottom: 0.7em !important;
+				font-size: 0.75em;
+				color: #6fc3df;
+				font-weight: 600;
+				letter-spacing: 0.05em;
+			}
+
+			.project-summary {
+				font-size: 0.75em;
+				line-height: 1.3;
+				color: #666;
+				margin: 0 0 1em 0;
+				height: 5.2em;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 4;
+				-webkit-box-orient: vertical;
+			}
+
+			.project-actions {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 1em;
+				margin-top: auto;
+			}
+
+			/* 2-LINE BUTTONS - Template Style */
+			.project-actions .button {
+				-moz-appearance: none;
+				-webkit-appearance: none;
+				-ms-appearance: none;
+				appearance: none;
+				-moz-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+				-webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+				-ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+				transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+				background-color: transparent;
+				border: 0;
+				border-radius: 0;
+				box-shadow: inset 0 0 0 2px #242943;
+				color: #242943;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 0.65em;
+				font-weight: 600;
+				height: 3.8em;
+				letter-spacing: 0.15em;
+				line-height: 1.5;
+				padding: 0.5em 0.8em;
+				text-align: center;
+				text-decoration: none;
+				text-transform: uppercase;
+				white-space: normal;
+				word-wrap: break-word;
+			}
+
+			.project-actions .button:hover,
+			.project-actions .button:active {
+				box-shadow: inset 0 0 0 2px #9bf1ff;
+				color: #9bf1ff;
+			}
+
+			.project-actions .button:active {
+				background-color: rgba(155, 241, 255, 0.1);
+				box-shadow: inset 0 0 0 2px #53e3fb;
+				color: #53e3fb;
+			}
+
+			.code-modal-body::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			.code-modal-body::-webkit-scrollbar-track {
+				background: #1e1e1e;
+			}
+
+			.code-modal-body::-webkit-scrollbar-thumb {
+				background: #555;
+				border-radius: 5px;
+			}
+
+			.code-modal-body::-webkit-scrollbar-thumb:hover {
+				background: #6fc3df;
+			}
+
+			/* RESPONSIVE DESIGN */
+			@media screen and (max-width: 1680px) {
+				.project-card {
+					height: 520px;
+				}
+				
+				/* Keep desktop image height: 420px (no change) */
+			}
+
+			@media screen and (max-width: 1280px) {
+				.enhanced-tiles {
+					gap: 2em;
+					padding: 3em 2em;
+				}
+				
+				.project-card {
+					height: 490px;
+				}
+				
+				/* Keep desktop image height: 420px (no change) */
+			}
+
+			@media screen and (max-width: 980px) {
+				.enhanced-tiles {
+					gap: 2em;
+					padding: 2.5em 1.5em;
+				}
+				
+				.project-card {
+					height: 465px;
+				}
+				
+				/* Keep desktop image height: 420px (no change) */
+			}
+
+			@media screen and (max-width: 736px) {
+				.enhanced-tiles {
+					grid-template-columns: 1fr;
+					gap: 2em;
+					padding: 2em 1em;
+				}
+				
+				.project-card {
+					height: auto;
+				}
+				
+				.project-image-wrapper {
+					height: 300px; /* Mobile: Reduced for better UX */
+				}
+				
+				.project-title {
+					font-size: 1.5em;
+				}
+				
+				.project-summary {
+					height: auto;
+					font-size: 0.85em;
+				}
+				
+				/* MOBILE: Keep 2 buttons side by side to save space */
+				.project-actions {
+					grid-template-columns: 1fr 1fr;
+					gap: 0.5em;
+				}
+				
+				/* MOBILE: Smaller buttons */
+				.project-actions .button {
+					font-size: 0.65em;
+					height: 4em;
+					padding: 0.4em 0.6em;
+					letter-spacing: 0.1em;
+				}
+			}
+
+			@media screen and (max-width: 480px) {
+				.project-image-wrapper {
+					height: 250px; /* Small mobile: Further reduced for better UX */
+				}
+				
+				.project-actions {
+					gap: 0.4em;
+				}
+				
+				.project-actions .button {
+					font-size: 0.6em;
+					padding: 0.3em 0.5em;
+				}
+			}
+
+			/* COMING SOON CARD */
+			.coming-soon-wrapper {
+				background: #1a1e35;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.coming-soon-overlay {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 0.5em;
+				height: 100%;
+				width: 100%;
+			}
+			.coming-soon-icon { font-size: 3em; opacity: 0.5; }
+			.coming-soon-label { font-size: 0.85em; font-weight: 700; letter-spacing: 0.2em; color: #6fc3df; opacity: 0.8; }
+			.coming-soon-sub { font-size: 0.72em; color: #aaa; letter-spacing: 0.1em; }
+			.coming-soon-card { border: 2px dashed rgba(111,195,223,0.3) !important; }
+
+			/* CONTACT SECTION */
+			#footer {
+				text-align: left !important;
+				min-height: 100vh;
+				box-sizing: border-box;
+			}
+			/* #main (About/Projects) ships with a slightly LIGHTER navy (#2a2f4a)
+			   than body/#footer (#242943) — any residual imprecision in the menu's
+			   scroll-to-Contact jump revealed a sliver of that lighter shade above
+			   the Contact heading. A previous attempt to "cover" that seam with an
+			   overlapping panel ended up hiding real project-tile content instead —
+			   removed. Simplest safe fix: make the two sections the same color, so
+			   there's no seam to see at all regardless of exactly where the scroll
+			   lands. */
+			#main {
+				background-color: #242943 !important;
+			}
+			@media screen and (max-width: 736px) {
+				#footer { min-height: 0; }
+			}
+			#footer .inner { text-align: left !important; padding-top: 7em !important; padding-bottom: 3em !important; }
+			@media screen and (max-width: 736px) {
+				#footer .inner { padding-top: 8em !important; }
+			}
+			#two { padding-bottom: 4em !important; }
+			@media screen and (max-width: 736px) { #two { padding-bottom: 2em !important; } }
+			.contact-heading {
+				color: #ffffff;
+				font-size: 1.6em;
+				margin: 0 0 0.6em 0;
+				text-align: left;
+				letter-spacing: 0.05em;
+			}
+			.contact-sentence {
+				color: #cdd6e0;
+				font-size: 1em;
+				line-height: 1.8;
+				margin: 0 0 1.8em 0;
+				text-align: left;
+				max-width: 900px;
+			}
+			.contact-links {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 0.9em;
+				margin-bottom: 2.5em;
+			}
+			.contact-link {
+				display: flex;
+				align-items: center;
+				gap: 0.75em;
+				color: #cdd6e0;
+				text-decoration: none;
+				font-size: 0.95em;
+				letter-spacing: 0.02em;
+				transition: color 0.2s ease;
+			}
+			.contact-link:hover { color: #6fc3df; }
+			.contact-link .icon { font-size: 1.1em; color: #6fc3df; min-width: 1.4em; }
+			.contact-link span { border-bottom: 1px solid rgba(111,195,223,0.3); padding-bottom: 1px; }
+			.contact-link:hover span { border-bottom-color: #6fc3df; }
+			@media screen and (max-width: 736px) {
+				.contact-heading { font-size: 1.3em; }
+				.contact-sentence { font-size: 0.9em; }
+				.contact-link { font-size: 0.9em; }
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<a href="index.html" class="logo"><strong>DATA ANALYTICS</strong> <span>PORTFOLIO</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="#one">About Me</a></li>
+							<li><a href="#two">Projects</a></li>
+							<li><a href="#footer">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Banner -->
+				<section id="banner" class="major">
+					<div class="inner">
+						<header class="major">
+							<h1>Hello, I'm Aristea Kampanaraki</h1>
+						</header>
+						<div class="content">
+							<p>An AEC professional with a passion for analytics. I use Power BI, Tableau, SQL, and Excel to translate data into meaningful insights.</p>
+							<ul class="actions">
+								<li><a href="#one" class="button next scrolly">Learn More About Me</a></li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+						<section id="one">
+							<div class="inner">
+								<header class="major">
+									<h2>About Me</h2>
+								</header>
+								<p>My passion lies in turning complex data into clear insights. Using Power BI, Tableau, SQL, and Excel, I help teams visualize trends, uncover opportunities, and drive informed, strategic decision-making across projects and operations.</p>
+								<p>With a foundation in civil engineering and business administration, I've always thrived at the intersection of technical precision and strategic thinking. My career in construction and real estate taught me how to manage complexity and deliver results in project management, design procedures, cost control, and risk management.</p>
+								<p>Building on that experience, I now channel my AEC industry knowledge into business analysis!</p>
+								<ul class="actions">
+									<li><a href="#two" class="button next">Projects</a></li>
+								</ul>
+							</div>
+						</section>
+
+						<!-- Two - Version 1: Final with 4-line description and no icons -->
+						<section id="two" class="enhanced-tiles">
+
+							<!-- Card 1: From P6 to Star Schema -->
+							<article class="project-card">
+								<div class="project-image-wrapper">
+									<img src="images/p2_p6-to-star-schema/P6-to-Star_hero.png" alt="From Primavera P6 to Star Schema" class="project-hero-image" />
+								</div>
+								<div class="project-content">
+									<h3 class="project-title">From Primavera P6 to Star Schema</h3>
+									<div class="tech-stack">POWER BI · POWER QUERY · PRIMAVERA P6 · EVM · AEC</div>
+									<p class="project-summary">Automated ETL pipeline from Primavera P6 exports to a production-grade Power BI star schema. Zero-touch refresh across multiple project phases — WBS hierarchy, time-phased cost distribution, and full data lineage resolved in Power Query.</p>
+									<div class="project-actions">
+										<a href="p6-to-star-schema.html" class="button" title="Click to see more about the project">PROJECT OVERVIEW</a>
+										<a href="#" class="button view-code-btn" data-project="p6-star-schema" title="View source code">VIEW CODE</a>
+									</div>
+								</div>
+							</article>
+
+							<!-- Card 2: Construction BI Dashboard -->
+							<article class="project-card">
+								<div class="project-image-wrapper">
+									<img src="images/p2_construction-bi/construction-bi-hero.jpg" alt="Construction BI Dashboard" class="project-hero-image" />
+								</div>
+								<div class="project-content">
+									<h3 class="project-title">Construction BI Dashboard</h3>
+									<div class="tech-stack">POWER BI · DAX · POWER QUERY · PRIMAVERA P6 · EVM · AEC</div>
+									<p class="project-summary">An end-to-end construction performance tracking for a large-scale 5-star hotel development. Report pages: Executive Summary (EVM KPIs, S-Curve, cost-schedule performance), Progress (work package breakdown, hidden schedule risk), and Gantt (948 tasks, WBS SPI status).</p>
+									<div class="project-actions">
+										<a href="construction-bi-dashboard.html" class="button" title="Click to see more about the project">PROJECT OVERVIEW</a>
+										<a href="#" class="button view-dashboard-btn" data-project="construction-bi" title="Watch dashboard walkthrough">DASHBOARD SHOWCASE</a>
+									</div>
+								</div>
+							</article>
+
+							<!-- Card 3: Airbnb Athens Data Warehouse -->
+							<article class="project-card">
+								<div class="project-image-wrapper">
+									<img src="images/p3_airbnb_athens_sql/airbnb-sql-hero.png" alt="Airbnb Athens Data Warehouse" class="project-hero-image" />
+								</div>
+								<div class="project-content">
+									<h3 class="project-title">Airbnb Athens Data Warehouse</h3>
+									<div class="tech-stack">SQL SERVER · PYTHON · STAR SCHEMA · SCD TYPE 1 · PROPTECH</div>
+									<p class="project-summary">A SQL Server data warehouse built from Inside Airbnb's Athens listings, engineered for market-analysis questions rather than as a generic dataset clone. Hybrid Python/pyodbc + SSMS ingestion, idempotent quarterly reloads, and a 6-dimension/2-fact star schema ready for Power BI.</p>
+									<div class="project-actions">
+										<a href="airbnb-athens-star-schema.html" class="button" title="Click to see more about the project">PROJECT OVERVIEW</a>
+										<a href="#" class="button view-code-btn" data-project="airbnb-sql-warehouse" title="View source code">VIEW CODE</a>
+									</div>
+								</div>
+							</article>
+
+							<!-- Card 4: WOWI Sales Analysis -->
+							<article class="project-card">
+								<div class="project-image-wrapper">
+									<img src="images/p4_wowi-sql-case-study/wowi-hero.png" alt="WOWI Sales Analysis" class="project-hero-image" />
+								</div>
+								<div class="project-content">
+									<h3 class="project-title">WOWI Sales Analysis</h3>
+									<div class="tech-stack">SQL SERVER · T-SQL · STAR SCHEMA · BIDA CERTIFICATION</div>
+									<p class="project-summary">A case-based SQL project from Corporate Finance Institute's BIDA certification, simulating a BI Analyst role at a fictional wholesale importer — answering real business questions across finance, marketing, delivery, and product teams using set operators, join-direction audits, and production-safe reusable queries.</p>
+									<div class="project-actions">
+										<a href="wowi-sql-case-study.html" class="button" title="Click to see more about the project">PROJECT OVERVIEW</a>
+										<a href="#" class="button view-code-btn" data-project="wowi-sql-case-study" title="View source code">VIEW CODE</a>
+									</div>
+								</div>
+							</article>
+							
+							<!-- Card 5: Random Date Generator -->
+							<article class="project-card">
+								<div class="project-image-wrapper">
+									<img src="images/p1_random_date_generator/p1_hero.jpeg" alt="Random Date Generator" class="project-hero-image" />
+								</div>
+								<div class="project-content">
+									<h3 class="project-title">Random Date Generator</h3>
+									<div class="tech-stack">PYTHON · BI TESTING · EXCEL</div>
+									<p class="project-summary">A production-ready Python utility that generates validated, unique random dates for Business Intelligence testing. Features automated leap year detection, dual output formats, and robust data validation.</p>
+									<div class="project-actions">
+										<a href="random_date_generator.html" class="button" title="Click to see more about the project">PROJECT OVERVIEW</a>
+										<a href="#" class="button view-code-btn" data-project="date-generator" title="View source code">VIEW CODE</a>
+									</div>
+								</div>
+							</article>
+						</section>
+
+					</div>
+		
+				<!-- Footer / Contact -->
+					<footer id="footer">
+						<div class="inner">
+
+							<h2 class="contact-heading">Contact</h2>
+
+							<p class="contact-sentence">Have a question about a project, interested in a collaboration, or just passionate about data? Don't hesitate to reach out.</p>
+
+							<div class="contact-links">
+								<a href="https://github.com/Aristea-Kampanaraki" target="_blank" class="contact-link">
+									<i class="icon brands alt fa-github"></i>
+									<span>github.com/Aristea-Kampanaraki</span>
+								</a>
+								<a href="https://www.linkedin.com/in/aristea-kampanaraki/" target="_blank" class="contact-link">
+									<i class="icon brands alt fa-linkedin-in"></i>
+									<span>Aristea Kampanaraki</span>
+								</a>
+								<a href="mailto:akampanaraki@gmail.com" class="contact-link">
+									<i class="icon solid alt fa-envelope"></i>
+									<span>akampanaraki@gmail.com</span>
+								</a>
+							</div>
+
+							<ul class="copyright">
+								<li>&copy; 2026 Aristea Kampanaraki</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+		<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script>
+			// Fix: menu's default handler waits 250ms then sets window.location.href,
+			// which relies on the browser's native hash-jump. For in-page anchors
+			// (#one, #two, #footer) that lands short and leaves the previous section
+			// peeking above the target.
+			//
+			// This now uses plain jQuery offset()/scrollTop() math rather than
+			// scrollIntoView()+scroll-margin-top — that modern combination wasn't
+			// reliably landing correctly on mobile even after the header-height and
+			// direction fixes, while desktop was fine, which points at inconsistent
+			// scroll-margin-top support on the mobile browser being tested rather
+			// than a math error. Plain offset math is older and more universally
+			// supported, and is what this scroll-to-Contact fix originally used
+			// (proven working on desktop before later changes swapped it out).
+			jQuery(function($) {
+				var $menuInner = $('#menu').children('.inner');
+
+				// IMPORTANT direction note (got this backwards once already):
+				// a LARGER offset scrolls LESS far down, leaving MORE of the
+				// previous section visible above the target. So the safe
+				// direction is to subtract slightly LESS than the header's full
+				// height (tuck the target a few px under the header) rather than
+				// over-subtract. Worst case that just hides a few px of the
+				// target's own top edge — far less noticeable than the previous
+				// section peeking through.
+				var SCROLL_OFFSET_TUCK = 15;
+
+				function scrollToHash(href, animateIt) {
+					var $target = $(href);
+					if (!$target.length) return;
+
+					var headerHeight = $('#header').outerHeight() || 0;
+					var offset = Math.max(0, headerHeight - SCROLL_OFFSET_TUCK);
+					var targetTop = $target.offset().top - offset;
+
+					if (animateIt) {
+						$('html, body').stop().animate({ scrollTop: targetTop }, 400);
+					} else {
+						$(window).scrollTop(targetTop);
+					}
+				}
+
+				function scrollToHashWithCorrection(href) {
+					scrollToHash(href, true);
+
+					var correct = function() {
+						scrollToHash(href, false);
+					};
+
+					// Correct once web fonts report ready.
+					if (document.fonts && document.fonts.ready) {
+						document.fonts.ready.then(function() {
+							window.setTimeout(correct, 450);
+						});
+					}
+
+					// Correct once all images/resources have loaded.
+					$(window).on('load', function() {
+						window.setTimeout(correct, 150);
+					});
+
+					// Final safety-net correction in case something loads later still.
+					window.setTimeout(correct, 1200);
+				}
+
+				$menuInner.off('click', 'a').on('click', 'a', function(event) {
+					var href = $(this).attr('href');
+
+					event.preventDefault();
+					event.stopPropagation();
+
+					$('body').removeClass('is-menu-visible');
+
+					if (href.charAt(0) === '#' && href.length > 1 && $(href).length) {
+						window.setTimeout(function() {
+							scrollToHashWithCorrection(href);
+						}, 260);
+					} else {
+						window.setTimeout(function() {
+							window.location.href = href;
+						}, 250);
+					}
+				});
+
+				// Handle arriving fresh from another page with a hash already
+				// in the URL, e.g. index.html#footer from a project page link.
+				// The browser's native jump runs first (uncorrected); this
+				// overrides it with the same precise, self-correcting scroll.
+				if (window.location.hash && window.location.hash.length > 1 && $(window.location.hash).length) {
+					scrollToHashWithCorrection(window.location.hash);
+				}
+			});
+		</script>
+
+		
+<!-- Code Modal (ACTION 1 - NO BUTTONS) -->
+<div id="code-modal" class="code-modal">
+	<div class="code-modal-content">
+		<div class="code-modal-header">
+			<h2 id="code-modal-title">Python Source Code - Random Date Generator</h2>
+			<span class="code-modal-close">&times;</span>
+		</div>
+		<div class="code-modal-body">
+			<div class="code-wrapper">
+				<pre><code id="code-display"></code></pre>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Video Modal (ACTION 2) -->
+<div id="video-modal" class="video-modal">
+	<div class="video-modal-content">
+		<div class="video-modal-header">
+			<h2 id="video-modal-title">Dashboard Walkthrough</h2>
+			<span class="video-modal-close">&times;</span>
+		</div>
+		<div class="video-modal-body">
+			<div class="video-wrapper">
+				<div id="video-container"></div>
+			</div>
+			<div class="video-info">
+				<p id="video-description"></p>
+				<p class="demo-note">
+					📞 <strong>Want to see the full interactive dashboard?</strong><br>
+					Contact me to schedule a live demonstration where you can explore the data and interact with all features.
+				</p>
+			</div>
+		</div>
+		<div class="video-modal-footer">
+			<a href="mailto:akampanaraki@gmail.com?subject=Dashboard Demo Request" class="button">Request Live Demo</a>
+		</div>
+	</div>
+</div>
+
+<style>
+/* Code Modal */
+.code-modal {
+	display: none;
+	position: fixed;
+	z-index: 10001;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(36, 41, 67, 0.95);
+	backdrop-filter: blur(5px);
+}
+
+.code-modal-content {
+	background-color: #1e1e1e;
+	margin: 2% auto;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 1200px;
+	max-height: 94vh;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.code-modal-header {
+	padding: 1.5em 2em;
+	border-bottom: 2px solid #6fc3df;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #2d2d2d;
+	border-radius: 8px 8px 0 0;
+}
+
+.code-modal-header h2 {
+	margin: 0;
+	color: #ffffff;
+	font-size: 1.5em;
+}
+
+.code-modal-close {
+	color: #ffffff;
+	font-size: 2em;
+	font-weight: bold;
+	cursor: pointer;
+	transition: color 0.3s ease;
+}
+
+.code-modal-close:hover {
+	color: #6fc3df;
+}
+
+.code-modal-body {
+	padding: 2em;
+	overflow-y: auto;
+	flex: 1;
+	background: #1e1e1e;
+}
+
+/* Code showcase content (P6 / Airbnb / WOWI / Random Date) is built from
+   inline-styled divs whose em sizes compound down smaller than intended.
+   Force an explicit, readable desktop size; mobile media queries below
+   override this further down for narrow screens. */
+#code-display,
+#code-display pre,
+#code-display span,
+#code-display div {
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+/* The section headers (e.g. "SENTINEL PATTERN — WBS Hierarchy Preservation")
+   and their description text carry their OWN inline font-size (0.9em/0.95em),
+   which beats the rule above since inline styles win over external CSS
+   without !important. Target them specifically, desktop-only, so mobile
+   (already confirmed readable) isn't touched. */
+@media screen and (min-width: 737px) {
+	#code-display div[style*="border-left"] {
+		font-size: 21px !important;
+		font-weight: 700 !important;
+	}
+	#code-display div[style*="border-left"] span {
+		font-size: 17px !important;
+		font-weight: 400 !important;
+	}
+}
+
+.code-wrapper pre {
+	margin: 0;
+	background: #1e1e1e;
+	padding: 0;
+}
+
+.code-wrapper code {
+	color: #d4d4d4;
+	font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+	font-size: 0.9em;
+	line-height: 1.6;
+	display: block;
+	white-space: pre;
+	counter-reset: line;
+}
+
+.code-wrapper code .line {
+	display: block;
+	padding-left: 3.5em;
+	position: relative;
+}
+
+.code-wrapper code .line::before {
+	content: counter(line);
+	counter-increment: line;
+	position: absolute;
+	left: 0;
+	width: 3em;
+	text-align: right;
+	color: #858585;
+	padding-right: 0.5em;
+	user-select: none;
+}
+
+.code-wrapper code .comment { color: #6A9955; font-style: italic; }
+.code-wrapper code .keyword { color: #569CD6; font-weight: 600; }
+.code-wrapper code .string { color: #CE9178; }
+.code-wrapper code .number { color: #B5CEA8; }
+.code-wrapper code .builtin { color: #4EC9B0; }
+
+/* Video Modal */
+.video-modal {
+	display: none;
+	position: fixed;
+	z-index: 10001;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(36, 41, 67, 0.95);
+	backdrop-filter: blur(5px);
+}
+
+.video-modal-content {
+	background-color: #ffffff;
+	margin: 3% auto;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 1200px;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.video-modal-header {
+	padding: 1.5em 2em;
+	border-bottom: 2px solid #6fc3df;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #f8f9fa;
+	border-radius: 8px 8px 0 0;
+}
+
+.video-modal-header h2 {
+	margin: 0;
+	color: #242943;
+	font-size: 1.3em;
+}
+
+.video-modal-close {
+	color: #666;
+	font-size: 2em;
+	font-weight: bold;
+	cursor: pointer;
+	transition: color 0.3s ease;
+}
+
+.video-modal-close:hover {
+	color: #6fc3df;
+}
+
+.video-modal-body {
+	padding: 2em;
+	overflow-y: auto;
+	flex: 1;
+}
+
+.video-wrapper {
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+	background: #000;
+	border-radius: 8px;
+	margin-bottom: 1.5em;
+}
+
+.video-wrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.video-info {
+	background: #f8f9fa;
+	padding: 1.5em;
+	border-radius: 8px;
+}
+
+.video-info p {
+	margin: 0 0 1em 0;
+	line-height: 1.6;
+	color: #666;
+}
+
+.demo-note {
+	background: rgba(111, 195, 223, 0.1);
+	border-left: 4px solid #6fc3df;
+	padding: 1em;
+	margin-top: 1em !important;
+	border-radius: 4px;
+}
+
+.demo-note strong {
+	color: #242943;
+}
+
+.video-modal-footer {
+	padding: 1.5em 2em;
+	border-top: 1px solid #e0e0e0;
+	text-align: center;
+	background: #ffffff;
+	border-radius: 0 0 8px 8px;
+}
+
+.video-modal-footer .button {
+	display: inline-block;
+}
+
+@media screen and (max-width: 736px) {
+	.code-modal-content, .video-modal-content {
+		width: 95%;
+		margin: 2% auto;
+	}
+	.code-modal-header, .video-modal-header {
+		padding: 0.75em 1em;
+	}
+	.code-modal-body, .video-modal-body {
+		padding: 0.6em 0.5em;
+	}
+	.code-wrapper code {
+		font-size: 0.75em;
+	}
+	.video-wrapper {
+		padding-bottom: 75%;
+	}
+
+	/* Code showcase (P6 / Airbnb / WOWI / Random Date) is built from inline-styled
+	   divs, not .code-wrapper — its em sizes compound with the shrunken mobile
+	   body font (11pt at this breakpoint). Force explicit, non-compounding
+	   pixel sizes and make sure long lines wrap instead of scrolling. */
+	#code-display,
+	#code-display pre,
+	#code-display span,
+	#code-display div {
+		font-size: 13px !important;
+		line-height: 1.5 !important;
+	}
+	#code-display pre {
+		padding: 0.6em !important;
+		white-space: pre-wrap !important;
+		word-break: break-word !important;
+		overflow-x: hidden !important;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.code-modal-body {
+		padding: 0.5em 0.4em;
+	}
+	#code-display,
+	#code-display pre,
+	#code-display span,
+	#code-display div {
+		font-size: 12.5px !important;
+	}
+}
+</style>
+
+<script>
+
+const projectVideos = {
+	'construction-bi': {
+		title: 'Construction BI Dashboard — Primavera P6 + Power BI Walkthrough',
+		videoId: 'RfpVIa-AR4k',
+		description: 'End-to-end construction performance tracking for a 5-star hotel. EVM KPIs, S-Curve, Gantt, DAX narrative intelligence — built on a star schema fed by an automated P6 ETL pipeline.'
+	},
+	'airbnb-athens': {
+		title: 'Airbnb Athens Market Analysis - Dashboard Tour',
+		videoId: 'YOUR_YOUTUBE_VIDEO_ID',
+		description: 'Explore the Airbnb Athens dashboard showcasing 7,336 listings analysis.'
+	}
+};
+
+const codeModal = document.getElementById('code-modal');
+const codeDisplay = document.getElementById('code-display');
+const codeCloseBtn = document.querySelector('.code-modal-close');
+
+const videoModal = document.getElementById('video-modal');
+const videoTitle = document.getElementById('video-modal-title');
+const videoContainer = document.getElementById('video-container');
+const videoDescription = document.getElementById('video-description');
+const videoCloseBtn = document.querySelector('.video-modal-close');
+
+// ACTION 1: Handle VIEW CODE button
+document.querySelectorAll('.view-code-btn').forEach(btn => {
+	btn.addEventListener('click', function(e) {
+		e.preventDefault();
+		const projectId = this.getAttribute('data-project');
+		if (projectId === 'p6-star-schema') {
+			document.getElementById('code-modal-title').textContent = 'P6 to Star Schema — Code Showcase';
+			document.getElementById('code-display').innerHTML = `
+<div style="font-family:'Courier New',monospace;font-size:0.9em;line-height:1.7;color:#e2e8f0;padding:0;overflow-x:hidden;">
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🔒 SENTINEL PATTERN — WBS Hierarchy Preservation<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">P6 exports WBS summary rows with null Activity ID. The sentinel pattern flags them for safe removal after hierarchy fill-down is complete.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;">// ── SENTINEL: replace null Activity ID ───────────────────────────────────</span>
+<span style="color:#6fc3df;">#"Replaced Value"</span> = Table.ReplaceValue(<span style="color:#6fc3df;">#"Cleaned Costs"</span>,
+    null, <span style="color:#f4a261;">"# NULL VALUE TO DELETE"</span>, Replacer.ReplaceValue, {<span style="color:#f4a261;">"Activity ID"</span>}),
+
+<span style="color:#5a7090;">// ── INDEX: preserve original P6 row order ────────────────────────────────</span>
+<span style="color:#6fc3df;">#"Added Index"</span> = Table.AddIndexColumn(<span style="color:#6fc3df;">#"Changed Type"</span>, <span style="color:#f4a261;">"Row Index"</span>, 1, 1, Int64.Type),
+
+<span style="color:#5a7090;">// ── WBS LEVEL: derive hierarchy depth from leading spaces ─────────────────</span>
+<span style="color:#5a7090;">// Must run BEFORE Text.Trim — trimming destroys the indentation signal</span>
+<span style="color:#6fc3df;">#"Added WBS Level"</span> = Table.AddColumn(<span style="color:#6fc3df;">#"Added Index"</span>, <span style="color:#f4a261;">"WBS Level"</span>,
+    each let
+        raw        = [WBS],
+        trimmed    = Text.TrimStart(raw),
+        spaceCount = Text.Length(raw) - Text.Length(trimmed),
+        level      = spaceCount / 2 + 1
+    in level, Int64.Type),
+
+<span style="color:#5a7090;">// ── L3 GROUP: tag Level 3 WBS name, fill down to all child rows ───────────</span>
+<span style="color:#6fc3df;">#"Added L3 Group"</span> = Table.AddColumn(<span style="color:#6fc3df;">#"Added WBS Level"</span>, <span style="color:#f4a261;">"L3 WBS Level Name"</span>,
+    each if [WBS Level] = 3 then Text.TrimStart([WBS]) else null, type text),
+<span style="color:#6fc3df;">#"Fill Down L3"</span> = Table.FillDown(<span style="color:#6fc3df;">#"Added L3 Group"</span>, {<span style="color:#f4a261;">"L3 WBS Level Name"</span>}),
+
+<span style="color:#5a7090;">// ── FILTER: remove sentinel rows after hierarchy is complete ─────────────</span>
+<span style="color:#6fc3df;">#"Filtered Rows"</span> = Table.SelectRows(<span style="color:#6fc3df;">#"Fill Down L3"</span>,
+    each ([Activity ID] &lt;&gt; <span style="color:#f4a261;">"# NULL VALUE TO DELETE"</span>)),
+
+<span style="color:#5a7090;">// ── TRIM WBS: safe to trim only after level detection and fill-down ───────</span>
+<span style="color:#6fc3df;">#"Trimmed WBS"</span> = Table.TransformColumns(<span style="color:#6fc3df;">#"Filtered Rows"</span>,
+    {{<span style="color:#f4a261;">"WBS"</span>, Text.Trim, type text}})</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📁 SOURCEFILE INJECTION — Automatic Metadata Extraction<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Project ID and Phase live in the filename. Injected before Table.Combine where [Name] is in scope, then split on _ to extract both fields automatically.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;">// ── ADD SourceFile: inject filename into each nested table before combine ─</span>
+<span style="color:#6fc3df;">#"Injected SourceFile"</span> = Table.AddColumn(<span style="color:#6fc3df;">#"Added Custom"</span>, <span style="color:#f4a261;">"TransformedData"</span>, each
+    let
+        fileName = Text.BeforeDelimiter([Name], <span style="color:#f4a261;">".xlsx"</span>),
+        table    = [Data]
+    in
+        if table is table then
+            Table.AddColumn(table, <span style="color:#f4a261;">"SourceFile"</span>, each fileName)
+        else null),
+
+<span style="color:#5a7090;">// ── COMBINE ──────────────────────────────────────────────────────────────</span>
+<span style="color:#6fc3df;">#"Combined"</span> = Table.Combine(
+    List.Select(<span style="color:#6fc3df;">#"Injected SourceFile"</span>[TransformedData], each _ &lt;&gt; null)),
+
+<span style="color:#5a7090;">// ── SPLIT SourceFile → Project ID / Project Phase ────────────────────────</span>
+<span style="color:#5a7090;">// PJ-0225_2025-05-08.xlsx → Project ID: PJ-0225 | Project Phase: 2025-05-08</span>
+<span style="color:#6fc3df;">#"Split Column by Delimiter"</span> = Table.SplitColumn(
+    <span style="color:#6fc3df;">#"Combined"</span>, <span style="color:#f4a261;">"SourceFile"</span>,
+    Splitter.SplitTextByDelimiter(<span style="color:#f4a261;">"_"</span>, QuoteStyle.Csv),
+    {<span style="color:#f4a261;">"Project ID"</span>, <span style="color:#f4a261;">"Project Phase"</span>})</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📅 DIM_CALENDAR — Centralised Date Spine (DAX)<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Built in DAX as the model's single date spine — one slicer drives every report view consistently across all fact tables.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#6fc3df;">Dim_Calendar</span> =
+<span style="color:#9bf1ff;">VAR</span> MinDate = <span style="color:#9bf1ff;">DATE</span> ( 2022, 3, 1 )   <span style="color:#5a7090;">-- Project baseline start</span>
+<span style="color:#9bf1ff;">VAR</span> MaxDate = <span style="color:#9bf1ff;">DATE</span> ( 2025, 8, 31 )  <span style="color:#5a7090;">-- Expected project end</span>
+
+<span style="color:#9bf1ff;">RETURN</span>
+<span style="color:#9bf1ff;">ADDCOLUMNS</span> (
+    <span style="color:#9bf1ff;">CALENDAR</span> ( MinDate, MaxDate ),
+    <span style="color:#f4a261;">"Year"</span>,          <span style="color:#9bf1ff;">YEAR</span> ( [Date] ),
+    <span style="color:#f4a261;">"Quarter"</span>,       <span style="color:#9bf1ff;">QUARTER</span> ( [Date] ),
+    <span style="color:#f4a261;">"QuarterID"</span>,     <span style="color:#9bf1ff;">FORMAT</span> ( [Date], <span style="color:#f4a261;">"YYYY"</span> ) &amp; <span style="color:#f4a261;">"Q"</span> &amp; <span style="color:#9bf1ff;">FORMAT</span> ( [Date], <span style="color:#f4a261;">"Q"</span> ),
+    <span style="color:#f4a261;">"Month"</span>,         <span style="color:#9bf1ff;">MONTH</span> ( [Date] ),
+    <span style="color:#f4a261;">"Year-Month"</span>,    <span style="color:#9bf1ff;">FORMAT</span> ( [Date], <span style="color:#f4a261;">"MMM"</span> ) &amp; <span style="color:#f4a261;">" "</span> &amp; <span style="color:#9bf1ff;">FORMAT</span> ( [Date], <span style="color:#f4a261;">"YYYY"</span> ),
+    <span style="color:#f4a261;">"YearMonthSort"</span>, <span style="color:#9bf1ff;">YEAR</span> ( [Date] ) * 100 + <span style="color:#9bf1ff;">MONTH</span> ( [Date] ),
+    <span style="color:#f4a261;">"MonthName"</span>,     <span style="color:#9bf1ff;">FORMAT</span> ( [Date], <span style="color:#f4a261;">"MMM"</span> ),
+    <span style="color:#f4a261;">"DayOfMonth"</span>,    <span style="color:#9bf1ff;">DAY</span> ( [Date] ),
+    <span style="color:#f4a261;">"DayOfWeek"</span>,     <span style="color:#9bf1ff;">WEEKDAY</span> ( [Date], 2 ),
+    <span style="color:#f4a261;">"DayName"</span>,       <span style="color:#9bf1ff;">FORMAT</span> ( [Date], <span style="color:#f4a261;">"ddd"</span> )
+)</pre>
+
+</div>`;
+			codeModal.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		} else if (projectId === 'airbnb-sql-warehouse') {
+			document.getElementById('code-modal-title').textContent = 'Airbnb Athens Data Warehouse — Code Showcase';
+			document.getElementById('code-display').innerHTML = `
+<div style="font-family:'Courier New',monospace;font-size:0.9em;line-height:1.7;color:#e2e8f0;padding:0;overflow-x:hidden;">
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🌍 DimLocation — Reference File, Sentinel Key Pattern<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Sourced from neighbourhoods.csv rather than listings — sidesteps a real Greek-text encoding bug entirely. The id = 0 sentinel row gives FactListings a valid FK target for unmatched rows, instead of a NULL.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;">-- ── Idempotent guard: safe to re-run every quarter ───────────────────────</span>
+<span style="color:#9bf1ff;">IF</span> OBJECT_ID(<span style="color:#f4a261;">'DimLocation'</span>, <span style="color:#f4a261;">'U'</span>) <span style="color:#9bf1ff;">IS NOT NULL</span> <span style="color:#9bf1ff;">DROP TABLE</span> <span style="color:#6fc3df;">DimLocation</span>;
+
+<span style="color:#9bf1ff;">CREATE TABLE</span> <span style="color:#6fc3df;">DimLocation</span>
+(
+    <span style="color:#6fc3df;">location_id</span>            <span style="color:#9bf1ff;">INT</span>           <span style="color:#9bf1ff;">IDENTITY</span>(1,1) <span style="color:#9bf1ff;">PRIMARY KEY</span>,
+    <span style="color:#6fc3df;">neighbourhood_cleansed</span> <span style="color:#9bf1ff;">NVARCHAR</span>(100) <span style="color:#9bf1ff;">NOT NULL</span>
+);
+
+<span style="color:#9bf1ff;">INSERT INTO</span> <span style="color:#6fc3df;">DimLocation</span> (<span style="color:#6fc3df;">neighbourhood_cleansed</span>)
+<span style="color:#9bf1ff;">SELECT DISTINCT</span>
+    <span style="color:#9bf1ff;">ISNULL</span>(<span style="color:#9bf1ff;">REPLACE</span>(neighbourhood, <span style="color:#f4a261;">'N/A'</span>, <span style="color:#f4a261;">'Unknown'</span>), <span style="color:#f4a261;">'Unknown'</span>)
+<span style="color:#9bf1ff;">FROM</span> [2025-06-24_neighbourhoods];
+
+<span style="color:#5a7090;">-- ── Sentinel record: id = 0 = Unknown ─────────────────────────────────────</span>
+<span style="color:#9bf1ff;">SET</span> IDENTITY_INSERT <span style="color:#6fc3df;">DimLocation</span> <span style="color:#9bf1ff;">ON</span>;
+<span style="color:#9bf1ff;">INSERT INTO</span> <span style="color:#6fc3df;">DimLocation</span> (<span style="color:#6fc3df;">location_id</span>, <span style="color:#6fc3df;">neighbourhood_cleansed</span>)
+<span style="color:#9bf1ff;">SELECT</span> 0, <span style="color:#f4a261;">'Unknown'</span>;
+<span style="color:#9bf1ff;">SET</span> IDENTITY_INSERT <span style="color:#6fc3df;">DimLocation</span> <span style="color:#9bf1ff;">OFF</span>;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🔄 DimHost — SCD Type 1 via ROW_NUMBER()<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Found through an actual PK-violation build failure, not designed in the abstract. Latest snapshot per host_id wins; N/A and NULL text cleaned inline; rate columns stripped of '%' with a -1 sentinel for missing data (filtered out of Power BI's AVG()).</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">WITH</span> <span style="color:#6fc3df;">LatestHost</span> <span style="color:#9bf1ff;">AS</span>
+(
+    <span style="color:#9bf1ff;">SELECT</span> *,
+        <span style="color:#9bf1ff;">ROW_NUMBER</span>() <span style="color:#9bf1ff;">OVER</span> (
+            <span style="color:#9bf1ff;">PARTITION BY</span> host_id
+            <span style="color:#9bf1ff;">ORDER BY</span> snapshot_date <span style="color:#9bf1ff;">DESC</span>
+        ) <span style="color:#9bf1ff;">AS</span> rn
+    <span style="color:#9bf1ff;">FROM</span> listings
+)
+<span style="color:#9bf1ff;">SELECT</span>
+    host_id,
+    <span style="color:#9bf1ff;">ISNULL</span>(<span style="color:#9bf1ff;">REPLACE</span>(host_name, <span style="color:#f4a261;">'N/A'</span>, <span style="color:#f4a261;">'Unknown'</span>), <span style="color:#f4a261;">'Unknown'</span>) <span style="color:#9bf1ff;">AS</span> host_name,
+    <span style="color:#5a7090;">-- Strip % symbol; N/A and NULL → -1 sentinel (filter -1 in Power BI's AVG())</span>
+    <span style="color:#9bf1ff;">CAST</span>(
+        <span style="color:#9bf1ff;">ISNULL</span>(<span style="color:#9bf1ff;">REPLACE</span>(<span style="color:#9bf1ff;">REPLACE</span>(host_response_rate, <span style="color:#f4a261;">'%'</span>, <span style="color:#f4a261;">''</span>), <span style="color:#f4a261;">'N/A'</span>, <span style="color:#f4a261;">'-1'</span>), <span style="color:#f4a261;">'-1'</span>)
+    <span style="color:#9bf1ff;">AS</span> <span style="color:#9bf1ff;">DECIMAL</span>(5,2))                                    <span style="color:#9bf1ff;">AS</span> host_response_rate,
+    <span style="color:#5a7090;">-- t/f string → 0/1 integer</span>
+    <span style="color:#9bf1ff;">CASE WHEN</span> host_identity_verified = <span style="color:#f4a261;">'t'</span> <span style="color:#9bf1ff;">THEN</span> 1 <span style="color:#9bf1ff;">ELSE</span> 0 <span style="color:#9bf1ff;">END</span> <span style="color:#9bf1ff;">AS</span> host_identity_verified
+<span style="color:#9bf1ff;">INTO</span> <span style="color:#6fc3df;">DimHost</span>
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">LatestHost</span>
+<span style="color:#9bf1ff;">WHERE</span> rn = 1;
+
+<span style="color:#9bf1ff;">ALTER TABLE</span> <span style="color:#6fc3df;">DimHost</span> <span style="color:#9bf1ff;">ALTER COLUMN</span> host_id <span style="color:#9bf1ff;">BIGINT NOT NULL</span>;
+<span style="color:#9bf1ff;">ALTER TABLE</span> <span style="color:#6fc3df;">DimHost</span> <span style="color:#9bf1ff;">ADD PRIMARY KEY</span> (host_id);
+
+<span style="color:#5a7090;">-- ── Sentinel record (host_id = 0) — valid FK target, never a NULL ─────────</span>
+<span style="color:#9bf1ff;">INSERT INTO</span> <span style="color:#6fc3df;">DimHost</span> (host_id, host_name, host_since, host_response_rate, host_identity_verified)
+<span style="color:#9bf1ff;">SELECT</span> 0, <span style="color:#f4a261;">'Unknown'</span>, <span style="color:#f4a261;">'1900-01-01'</span>, -1, 0;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📊 FactReviews — Grain: One Row Per Unique Review<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">is_active recalculates against whichever snapshot_date is currently latest in reviews at run time — no hardcoded dates, so appending a future quarter needs no script edits.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">IF</span> OBJECT_ID(<span style="color:#f4a261;">'FactReviews'</span>, <span style="color:#f4a261;">'U'</span>) <span style="color:#9bf1ff;">IS NOT NULL</span> <span style="color:#9bf1ff;">DROP TABLE</span> <span style="color:#6fc3df;">FactReviews</span>;
+
+<span style="color:#9bf1ff;">CREATE TABLE</span> <span style="color:#6fc3df;">FactReviews</span>
+(
+    <span style="color:#6fc3df;">review_id</span>           <span style="color:#9bf1ff;">BIGINT NOT NULL PRIMARY KEY</span>,
+    <span style="color:#6fc3df;">listing_id</span>          <span style="color:#9bf1ff;">BIGINT NOT NULL</span>,
+    <span style="color:#6fc3df;">date</span>                <span style="color:#9bf1ff;">DATE   NOT NULL</span>,
+    <span style="color:#6fc3df;">reviewer_id</span>         <span style="color:#9bf1ff;">BIGINT NOT NULL</span>,
+    <span style="color:#6fc3df;">first_snapshot_date</span> <span style="color:#9bf1ff;">DATE   NOT NULL</span>,
+    <span style="color:#6fc3df;">is_active</span>           <span style="color:#9bf1ff;">BIT    NOT NULL</span>
+);
+
+<span style="color:#9bf1ff;">WITH</span> <span style="color:#6fc3df;">ReviewSnapshots</span> <span style="color:#9bf1ff;">AS</span>
+(
+    <span style="color:#9bf1ff;">SELECT</span>
+        id, listing_id, date, reviewer_id, snapshot_date,
+        <span style="color:#9bf1ff;">MIN</span>(snapshot_date) <span style="color:#9bf1ff;">OVER</span> (<span style="color:#9bf1ff;">PARTITION BY</span> id) <span style="color:#9bf1ff;">AS</span> first_snapshot_date,
+        <span style="color:#9bf1ff;">MAX</span>(snapshot_date) <span style="color:#9bf1ff;">OVER</span> (<span style="color:#9bf1ff;">PARTITION BY</span> id) <span style="color:#9bf1ff;">AS</span> last_snapshot_date,
+        <span style="color:#9bf1ff;">ROW_NUMBER</span>() <span style="color:#9bf1ff;">OVER</span> (<span style="color:#9bf1ff;">PARTITION BY</span> id <span style="color:#9bf1ff;">ORDER BY</span> snapshot_date <span style="color:#9bf1ff;">DESC</span>) <span style="color:#9bf1ff;">AS</span> rn
+    <span style="color:#9bf1ff;">FROM</span> reviews
+)
+<span style="color:#9bf1ff;">INSERT INTO</span> <span style="color:#6fc3df;">FactReviews</span> (review_id, listing_id, date, reviewer_id, first_snapshot_date, is_active)
+<span style="color:#9bf1ff;">SELECT</span>
+    id, listing_id,
+    <span style="color:#9bf1ff;">CONVERT</span>(<span style="color:#9bf1ff;">DATE</span>, date, 103) <span style="color:#9bf1ff;">AS</span> date,
+    reviewer_id, first_snapshot_date,
+    <span style="color:#9bf1ff;">CASE</span>
+        <span style="color:#9bf1ff;">WHEN</span> last_snapshot_date = (<span style="color:#9bf1ff;">SELECT MAX</span>(snapshot_date) <span style="color:#9bf1ff;">FROM</span> reviews) <span style="color:#9bf1ff;">THEN</span> 1
+        <span style="color:#9bf1ff;">ELSE</span> 0
+    <span style="color:#9bf1ff;">END</span> <span style="color:#9bf1ff;">AS</span> is_active
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">ReviewSnapshots</span>
+<span style="color:#9bf1ff;">WHERE</span> rn = 1;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🐍 load_csv() — Python/pyodbc Loader, listings Only<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Replicates the wizard's exact column-type overrides in code. fast_executemany is deliberately OFF — pyodbc's client-side buffer pre-sizing causes "String data, right truncation" on wide-varying text columns even when the actual NVARCHAR(MAX) column is plenty wide. A schema-safe trade of speed for reliability, not a bug.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">def</span> <span style="color:#6fc3df;">load_csv</span>(csv_path, conn):
+    filename = os.path.basename(csv_path)
+    match = get_overrides_for_file(filename)
+    table_name, overrides, not_null_cols = match
+
+    <span style="color:#5a7090;"># Read everything as string — avoids pandas silently coercing types</span>
+    <span style="color:#5a7090;"># (e.g. turning '$50.00' into a float, dropping leading zeros from</span>
+    <span style="color:#5a7090;"># license numbers). SQL Server handles the typed-column conversion</span>
+    <span style="color:#5a7090;"># on INSERT correctly for well-formed values — same as the wizard.</span>
+    df = pd.read_csv(csv_path, dtype=<span style="color:#9bf1ff;">str</span>, keep_default_na=<span style="color:#9bf1ff;">False</span>, na_values=[<span style="color:#f4a261;">""</span>])
+    df = df.where(pd.notnull(df), <span style="color:#9bf1ff;">None</span>)  <span style="color:#5a7090;"># empty/NaN -> Python None -> SQL NULL</span>
+
+    columns = <span style="color:#6fc3df;">list</span>(df.columns)
+    col_defs = build_column_defs(df, columns, overrides, not_null_cols)
+
+    cursor = conn.cursor()
+    <span style="color:#5a7090;"># Drop and recreate — same "safe re-run" pattern used throughout the SQL scripts</span>
+    cursor.execute(<span style="color:#f4a261;">f"IF OBJECT_ID('[{table_name}]', 'U') IS NOT NULL DROP TABLE [{table_name}]"</span>)
+    create_sql = <span style="color:#f4a261;">f"CREATE TABLE [{table_name}] (\n    "</span> + <span style="color:#f4a261;">",\n    "</span>.join(col_defs) + <span style="color:#f4a261;">"\n)"</span>
+    cursor.execute(create_sql)
+    conn.commit()
+
+    <span style="color:#5a7090;"># Bulk insert</span>
+    placeholders = <span style="color:#f4a261;">", "</span>.join([<span style="color:#f4a261;">"?"</span>] * <span style="color:#6fc3df;">len</span>(columns))
+    col_list = <span style="color:#f4a261;">", "</span>.join(<span style="color:#f4a261;">f"[{c}]"</span> <span style="color:#9bf1ff;">for</span> c <span style="color:#9bf1ff;">in</span> columns)
+    insert_sql = <span style="color:#f4a261;">f"INSERT INTO [{table_name}] ({col_list}) VALUES ({placeholders})"</span>
+
+    <span style="color:#5a7090;"># ── fast_executemany deliberately OFF ──────────────────────────────────</span>
+    <span style="color:#5a7090;"># pyodbc pre-sizes its parameter buffers from the first rows in a batch —</span>
+    <span style="color:#5a7090;"># a later row longer than that (e.g. a 2000-char description after a</span>
+    <span style="color:#5a7090;"># two-word host_name) triggers a truncation error even though the real</span>
+    <span style="color:#5a7090;"># SQL Server column is plenty wide. Client-side buffering issue, not a</span>
+    <span style="color:#5a7090;"># schema issue — turning it off trades some speed for a load that</span>
+    <span style="color:#5a7090;"># doesn't randomly fail on real-world text data.</span>
+    cursor.fast_executemany = <span style="color:#9bf1ff;">False</span>
+    rows = [<span style="color:#9bf1ff;">tuple</span>(row) <span style="color:#9bf1ff;">for</span> row <span style="color:#9bf1ff;">in</span> df.itertuples(index=<span style="color:#9bf1ff;">False</span>, name=<span style="color:#9bf1ff;">None</span>)]
+
+    CHUNK_SIZE = 2000
+    <span style="color:#9bf1ff;">try</span>:
+        <span style="color:#9bf1ff;">for</span> start <span style="color:#9bf1ff;">in</span> <span style="color:#6fc3df;">range</span>(0, <span style="color:#6fc3df;">len</span>(rows), CHUNK_SIZE):
+            chunk = rows[start:start + CHUNK_SIZE]
+            cursor.executemany(insert_sql, chunk)
+            conn.commit()
+    <span style="color:#9bf1ff;">except</span> pyodbc.Error <span style="color:#9bf1ff;">as</span> e:
+        conn.rollback()
+        <span style="color:#6fc3df;">print</span>(<span style="color:#f4a261;">f"  ✘ Insert failed: {e}"</span>)
+        <span style="color:#9bf1ff;">raise</span></pre>
+
+<div style="margin-top:1em;padding-top:0.8em;border-top:1px solid rgba(111,195,223,0.2);font-size:0.95em;color:#c3ccd6;white-space:normal;overflow-wrap:break-word;">
+These are representative extracts. Full build scripts — SQL ingestion + star schema (~2,200 lines with data-quality profiling) and the Python/pyodbc loader (~470 lines) — are on <a href="https://github.com/arkampa/airbnb-athens-data-warehouse" target="_blank" style="color:#6fc3df;">GitHub</a>.
+</div>
+</div>`;
+			codeModal.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		} else if (projectId === 'wowi-sql-case-study') {
+			document.getElementById('code-modal-title').textContent = 'WOWI Sales Analysis — Code Showcase';
+			document.getElementById('code-display').innerHTML = `
+<div style="font-family:'Courier New',monospace;font-size:0.9em;line-height:1.7;color:#e2e8f0;padding:0;overflow-x:hidden;">
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🔒 Sentinel-Aware Counting — Known Customers Only<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">dimCustomer carries a placeholder 'Unknown' row. COUNT(*) alone would silently include it as if it were a real customer — the question was "how many known customers," not "how many rows."</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">SELECT</span>
+    <span style="color:#9bf1ff;">COUNT</span>(*) <span style="color:#9bf1ff;">AS</span> KnownCustomers
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimCustomer</span>
+<span style="color:#9bf1ff;">WHERE</span> Customer &lt;&gt; <span style="color:#f4a261;">'unknown'</span>;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🎯 Translating a Business Ask Into an Exclusion Filter — Halloween Campaign<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Marketing's brief was "ship a low-cost item for free" — with a catch mentioned almost as an aside: most of the cheapest items are just packaging. That aside had to become an explicit exclusion list, not a simple ORDER BY price.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;">-- Cheapest non-packaging-related product we currently sell</span>
+<span style="color:#9bf1ff;">SELECT TOP</span> 50
+    [Stock Item], [Unit Price]
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimStockItem</span>
+<span style="color:#9bf1ff;">WHERE</span> [Stock Item] &lt;&gt; <span style="color:#f4a261;">'unknown'</span>
+    <span style="color:#9bf1ff;">AND</span> [Stock Item] <span style="color:#9bf1ff;">NOT LIKE</span> <span style="color:#f4a261;">'%box%'</span>
+    <span style="color:#9bf1ff;">AND</span> [Stock Item] <span style="color:#9bf1ff;">NOT LIKE</span> <span style="color:#f4a261;">'%bag%'</span>
+    <span style="color:#9bf1ff;">AND</span> [Stock Item] <span style="color:#9bf1ff;">NOT LIKE</span> <span style="color:#f4a261;">'%carton%'</span>
+    <span style="color:#9bf1ff;">AND</span> [Stock Item] <span style="color:#9bf1ff;">NOT LIKE</span> <span style="color:#f4a261;">'%packaging%'</span>
+<span style="color:#9bf1ff;">ORDER BY</span> [Unit Price] <span style="color:#9bf1ff;">ASC</span>;
+
+<span style="color:#5a7090;">-- Cheapest qualifying black mug/shirt — tie-break by lowest Stock Item ID</span>
+<span style="color:#9bf1ff;">SELECT TOP</span> 1
+    [WWI Stock Item ID], [Stock Item], [Unit Price]
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimStockItem</span>
+<span style="color:#9bf1ff;">WHERE</span> ([Stock Item] <span style="color:#9bf1ff;">LIKE</span> <span style="color:#f4a261;">'%mug%'</span> <span style="color:#9bf1ff;">OR</span> [Stock Item] <span style="color:#9bf1ff;">LIKE</span> <span style="color:#f4a261;">'%shirt%'</span>)
+    <span style="color:#9bf1ff;">AND</span> [Color] = <span style="color:#f4a261;">'black'</span>
+<span style="color:#9bf1ff;">ORDER BY</span> [Unit Price], [WWI Stock Item ID] <span style="color:#9bf1ff;">ASC</span>;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📮 Threshold Detection via HAVING — Postcodes Worth a Delivery Trial<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">"Group deliveries by postcode instead of by individual store" only becomes answerable once reframed as a threshold on an aggregate — WHERE can't filter on a COUNT() that doesn't exist until after grouping; HAVING is the only clause that can.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">SELECT</span>
+    [Postal Code],
+    <span style="color:#9bf1ff;">COUNT</span>([Customer Key]) <span style="color:#9bf1ff;">AS</span> CustomerCount
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimCustomer</span>
+<span style="color:#9bf1ff;">WHERE</span> [Buying Group] = <span style="color:#f4a261;">'Wingtip Toys'</span>
+<span style="color:#9bf1ff;">GROUP BY</span> [Postal Code]
+<span style="color:#9bf1ff;">HAVING</span> <span style="color:#9bf1ff;">COUNT</span>([Buying Group]) &gt; 3  <span style="color:#5a7090;">-- the threshold that makes a postcode "worth it"</span>
+<span style="color:#9bf1ff;">ORDER BY</span> CustomerCount <span style="color:#9bf1ff;">DESC</span>;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🔀 Gap Detection via EXCEPT — Fiscal Months With Zero Sales<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">A set-subtraction between "all possible months" and "months that appear in factSale" states the actual question directly, instead of a NOT IN subquery or a LEFT JOIN ... WHERE NULL check.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;">-- Get all 12 possible fiscal months</span>
+<span style="color:#9bf1ff;">SELECT DISTINCT</span>
+    [Fiscal Year], [Fiscal Month Number], [Fiscal Month Label]
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimDate</span>
+
+<span style="color:#9bf1ff;">EXCEPT</span>
+
+<span style="color:#5a7090;">-- Remove months that DO have sales</span>
+<span style="color:#9bf1ff;">SELECT DISTINCT</span>
+    [Fiscal Year], [Fiscal Month Number], [Fiscal Month Label]
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">factSale</span> <span style="color:#9bf1ff;">AS</span> fS
+    <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimDate</span> <span style="color:#9bf1ff;">AS</span> dD <span style="color:#9bf1ff;">ON</span> fS.[Invoice Date Key] = dD.Date
+
+<span style="color:#9bf1ff;">ORDER BY</span> [Fiscal Year], [Fiscal Month Number];</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🧊 Chiller Products Audit — RIGHT JOIN Preserves Zero-Sales Rows<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">A standard JOIN would silently drop exactly the products this audit exists to find — any chiller product with zero rows in factSale simply wouldn't appear. RIGHT JOIN from dimStockItem keeps every product, and HAVING SUM(...) IS NULL isolates the ones with no sales at all.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">SELECT</span>
+    dS.[Stock Item]      <span style="color:#9bf1ff;">AS</span> ChillerNoSales,
+    <span style="color:#9bf1ff;">SUM</span>(fS.[Quantity]) <span style="color:#9bf1ff;">AS</span> QuantitySold
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">factSale</span> <span style="color:#9bf1ff;">AS</span> fS
+    <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimDate</span> <span style="color:#9bf1ff;">AS</span> dD
+        <span style="color:#9bf1ff;">ON</span> fS.[Invoice Date Key] = dD.[Date]
+    <span style="color:#9bf1ff;">RIGHT JOIN</span> <span style="color:#6fc3df;">dimStockItem</span> <span style="color:#9bf1ff;">AS</span> dS  <span style="color:#5a7090;">-- keep ALL products, even with zero sales</span>
+        <span style="color:#9bf1ff;">ON</span> dS.[Stock Item Key] = fS.[Stock Item Key]
+<span style="color:#9bf1ff;">WHERE</span> dS.[Is Chiller Stock] = 1
+<span style="color:#9bf1ff;">GROUP BY</span> dS.[Stock Item]
+<span style="color:#9bf1ff;">HAVING</span> <span style="color:#9bf1ff;">SUM</span>(fS.[Quantity]) <span style="color:#9bf1ff;">IS NULL</span>
+<span style="color:#9bf1ff;">ORDER BY</span> ChillerNoSales <span style="color:#9bf1ff;">DESC</span>;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📅 Two Approaches to "Current Fiscal Year" — Compared Deliberately<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">YEAR(GETDATE()) is simpler but returns nothing if the latest data hasn't loaded yet. Anchoring to MAX([Fiscal Year]) FROM factSale always resolves to the latest year with actual data — the difference between a query that looks correct in testing and one that's safe on a production warehouse.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;">-- Approach 1: YEAR(GETDATE()) — simple, but assumes current-year data has loaded</span>
+<span style="color:#9bf1ff;">SELECT TOP</span> 3
+    dE.[Employee], dS.[Stock Item] <span style="color:#9bf1ff;">AS</span> TopSelling,
+    <span style="color:#9bf1ff;">SUM</span>(fS.[Total Excluding Tax]) <span style="color:#9bf1ff;">AS</span> TotalSales
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">factSale</span> <span style="color:#9bf1ff;">AS</span> fS
+    <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimDate</span>      <span style="color:#9bf1ff;">AS</span> dD <span style="color:#9bf1ff;">ON</span> fS.[Invoice Date Key] = dD.Date
+    <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimStockItem</span> <span style="color:#9bf1ff;">AS</span> dS <span style="color:#9bf1ff;">ON</span> dS.[Stock Item Key] = fS.[Stock Item Key]
+    <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimEmployee</span>  <span style="color:#9bf1ff;">AS</span> dE <span style="color:#9bf1ff;">ON</span> dE.[Employee Key]  = fS.[Salesperson Key]
+<span style="color:#9bf1ff;">WHERE</span> dD.[Fiscal Year] = <span style="color:#9bf1ff;">YEAR</span>(<span style="color:#9bf1ff;">GETDATE</span>())  <span style="color:#5a7090;">-- ⚠ empty result if this year has no data yet</span>
+<span style="color:#9bf1ff;">GROUP BY</span> dD.[Fiscal Year], dE.[Employee], dS.[Stock Item]
+<span style="color:#9bf1ff;">ORDER BY</span> TotalSales <span style="color:#9bf1ff;">DESC</span>;
+
+<span style="color:#5a7090;">-- Approach 2: MAX(Fiscal Year) subquery — always returns the latest year WITH data</span>
+<span style="color:#9bf1ff;">WHERE</span> dD.[Fiscal Year] =
+(
+    <span style="color:#9bf1ff;">SELECT</span> <span style="color:#9bf1ff;">MAX</span>(dD2.[Fiscal Year])  <span style="color:#5a7090;">-- latest year with actual sales</span>
+    <span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">factSale</span> <span style="color:#9bf1ff;">AS</span> fS2
+        <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimDate</span> <span style="color:#9bf1ff;">AS</span> dD2 <span style="color:#9bf1ff;">ON</span> fS2.[Invoice Date Key] = dD2.Date
+)
+<span style="color:#5a7090;">-- ✅ industry-standard pattern for BI solutions: handles load failures,</span>
+<span style="color:#5a7090;">--    delayed data, and fiscal-vs-calendar-year differences</span></pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📉 "Why Is Profit Lower This Year?" — A Comparison, Not a Metric<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Finance's question wasn't answerable with a single SUM(Profit) — it needed a second column, MonthCount, to reveal that 2016 simply had fewer months of recorded data than 2015. Without that column the drop in profit looks like a performance problem instead of a data-completeness one.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">SELECT</span>
+    dD.[Fiscal Year],
+    <span style="color:#9bf1ff;">COUNT</span>(<span style="color:#9bf1ff;">DISTINCT</span> dD.[Fiscal Month Number]) <span style="color:#9bf1ff;">AS</span> MonthCount,
+    <span style="color:#9bf1ff;">SUM</span>([Profit]) <span style="color:#9bf1ff;">AS</span> TotalProfit
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">factSale</span> <span style="color:#9bf1ff;">AS</span> fS
+    <span style="color:#9bf1ff;">JOIN</span> <span style="color:#6fc3df;">dimDate</span> <span style="color:#9bf1ff;">AS</span> dD
+        <span style="color:#9bf1ff;">ON</span> fS.[Invoice Date Key] = dD.Date
+<span style="color:#9bf1ff;">WHERE</span> dD.[Fiscal Year] <span style="color:#9bf1ff;">IN</span> (2015, 2016)
+<span style="color:#9bf1ff;">GROUP BY</span> dD.[Fiscal Year]
+<span style="color:#9bf1ff;">ORDER BY</span> dD.[Fiscal Year];</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🌍 Ranking an Aggregate — Highest-Population Sales Territory<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">No single row in dimCity holds a territory's total population — it only exists once city-level rows are summed up. GROUP BY has to happen before ORDER BY can rank anything meaningful.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">SELECT</span>
+    [Sales Territory],
+    <span style="color:#9bf1ff;">SUM</span>([Latest Recorded Population]) <span style="color:#9bf1ff;">AS</span> Population
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimCity</span>
+<span style="color:#9bf1ff;">GROUP BY</span> [Sales Territory]
+<span style="color:#9bf1ff;">ORDER BY</span> Population <span style="color:#9bf1ff;">DESC</span>;</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🧮 Business Formula → Explicit Precision — Markup Calculation<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Markup is plain arithmetic, but left to SQL Server's default division typing it can silently round to far less precision than a real percentage needs — CAST to decimal(10,4) makes the precision explicit rather than accidental.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">SELECT</span>
+    [WWI Stock Item ID], [Stock Item],
+    <span style="color:#9bf1ff;">CAST</span>(
+        ([Recommended Retail Price] - [Unit Price]) / [Unit Price]
+    <span style="color:#9bf1ff;">AS</span> <span style="color:#9bf1ff;">DECIMAL</span>(10,4)) <span style="color:#9bf1ff;">AS</span> markup
+<span style="color:#9bf1ff;">FROM</span> <span style="color:#6fc3df;">dimStockItem</span>
+<span style="color:#9bf1ff;">WHERE</span> [WWI Stock Item ID] = 29;</pre>
+
+<div style="margin-top:1em;padding-top:0.8em;border-top:1px solid rgba(111,195,223,0.2);font-size:0.95em;color:#c3ccd6;white-space:normal;overflow-wrap:break-word;">
+These are representative extracts. The full set of queries (~550 lines, all 9 tasks, inline comments) is available upon request.
+</div>
+</div>`;
+			codeModal.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.getElementById('code-modal-title').textContent = 'Random Date Generator — Code Showcase';
+			document.getElementById('code-display').innerHTML = `
+<div style="font-family:'Courier New',monospace;font-size:0.9em;line-height:1.7;color:#e2e8f0;padding:0;overflow-x:hidden;">
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📅 Core Algorithm — Leap Year Detection<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Implements the actual Gregorian rule (divisible by 4, except centuries, except again every 400 years) rather than the common divisible-by-4 shortcut — so 1900 correctly comes out not a leap year while 2000 correctly does.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#6fc3df;">leap</span> = <span style="color:#9bf1ff;">False</span>
+<span style="color:#5a7090;"># Step 1: divisible by 4 but NOT by 100 → leap year</span>
+<span style="color:#9bf1ff;">if</span> y % 4 == 0:
+    <span style="color:#9bf1ff;">if</span> y % 100 != 0:
+        leap = <span style="color:#9bf1ff;">True</span>
+    <span style="color:#5a7090;"># Step 2: if Step 1 didn't already set leap, check divisible by 400</span>
+    <span style="color:#9bf1ff;">if not</span> leap:
+        <span style="color:#9bf1ff;">if</span> y % 400 == 0:
+            leap = <span style="color:#9bf1ff;">True</span>
+
+month_days[1] = 29 <span style="color:#9bf1ff;">if</span> leap <span style="color:#9bf1ff;">else</span> 28</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🔁 Validation Loop — Continuous Input With a Clean Exit<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">A while True loop lets the user generate dates for as many years as they want in one run. Non-numeric input doubles as the exit command, rather than needing a separate "quit" keyword.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#9bf1ff;">while True</span>:
+    year = <span style="color:#6fc3df;">input</span>(<span style="color:#f4a261;">"Year:"</span>).strip()
+    <span style="color:#5a7090;"># Non-numeric input exits the loop cleanly</span>
+    <span style="color:#9bf1ff;">if not</span> year.isdigit():
+        <span style="color:#9bf1ff;">break</span>
+    <span style="color:#9bf1ff;">else</span>:
+        y = <span style="color:#6fc3df;">int</span>(year)
+        <span style="color:#5a7090;"># ... leap year calculation and date generation</span></pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🎯 Validation Loop — Guaranteed-Unique Dates<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Test data with silent duplicates undermines exactly the kind of BI testing this tool exists for. A while loop with list-membership testing keeps generating until it has as many genuinely unique dates as requested — never fewer, never a duplicate.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;">numeric_dates = []
+<span style="color:#9bf1ff;">while</span> <span style="color:#6fc3df;">len</span>(numeric_dates) &lt; <span style="color:#6fc3df;">int</span>(random_days):
+    m = random.randint(0, 11)
+    d = random.randint(0, month_days[m] - 1)
+    date = <span style="color:#f4a261;">"{:02d}-{:02d}-{:04d}"</span>.format(d+1, m+1, y)
+    <span style="color:#5a7090;"># Only add if not already present</span>
+    <span style="color:#9bf1ff;">if</span> date <span style="color:#9bf1ff;">not in</span> numeric_dates:
+        numeric_dates.append(date)</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+📋 List Comprehensions for Data Extraction<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Turns a multiline block of month reference text into two clean structured lists in a single line each — conceptually similar to Power Query's Table.TransformColumns().</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;"># Month names: first word of each line</span>
+month_names = [x.split()[0] <span style="color:#9bf1ff;">for</span> x <span style="color:#9bf1ff;">in</span> months.split(<span style="color:#f4a261;">"\n"</span>)]
+<span style="color:#5a7090;"># Day counts: text between "(" and the next 2 chars, as int</span>
+month_days = [<span style="color:#6fc3df;">int</span>(x.split(<span style="color:#f4a261;">"("</span>)[1][:2]) <span style="color:#9bf1ff;">for</span> x <span style="color:#9bf1ff;">in</span> months.split(<span style="color:#f4a261;">"\n"</span>)]</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🔢 String Formatting — Dual Output, Zero-Padded<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Zero-padded numeric output prevents the sorting issues plain integers cause in Excel/BI tools, while a second textual format (day-MonthName-year) supports Greek-language reporting from the same underlying date.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0 0 0.4em 0;background:#0f1221;padding:1em;border-radius:4px;"><span style="color:#5a7090;"># Numeric: 2-digit day, 2-digit month, 4-digit year</span>
+date  = <span style="color:#f4a261;">"{:02d}-{:02d}-{:04d}"</span>.format(d+1, m+1, y)
+<span style="color:#5a7090;"># Textual: 2-digit day, month name string, 4-digit year</span>
+date_ = <span style="color:#f4a261;">"{:02d}-{:}-{:04d}"</span>.format(d+1, month_name, y)</pre>
+
+<div style="border-left:3px solid #6fc3df;padding-left:1em;margin-bottom:0.3em;color:#6fc3df;font-size:0.9em;">
+🇬🇷 Text Normalization — Greek Tonic Mark Removal<br>
+<span style="color:#c3ccd6;font-size:0.95em;display:block;white-space:normal;overflow-wrap:break-word;">Strips accented Greek vowels down to their unaccented form for standardized text output — the kind of normalization that keeps database imports and reporting systems consistent regardless of how the source text was typed.</span>
+</div>
+<pre style="white-space:pre-wrap;margin:0;background:#0f1221;padding:1em;border-radius:4px;">tonoi = {<span style="color:#f4a261;">"ά"</span>:<span style="color:#f4a261;">"α"</span>, <span style="color:#f4a261;">"έ"</span>:<span style="color:#f4a261;">"ε"</span>, <span style="color:#f4a261;">"ή"</span>:<span style="color:#f4a261;">"η"</span>, <span style="color:#f4a261;">"ί"</span>:<span style="color:#f4a261;">"ι"</span>, <span style="color:#f4a261;">"ό"</span>:<span style="color:#f4a261;">"ο"</span>, <span style="color:#f4a261;">"ύ"</span>:<span style="color:#f4a261;">"υ"</span>, <span style="color:#f4a261;">"ώ"</span>:<span style="color:#f4a261;">"ω"</span>}
+month_temp = <span style="color:#f4a261;">""</span>.join([tonoi.get(c, c) <span style="color:#9bf1ff;">for</span> c <span style="color:#9bf1ff;">in</span> month_name])</pre>
+
+<div style="margin-top:1em;padding-top:0.8em;border-top:1px solid rgba(111,195,223,0.2);font-size:0.95em;color:#c3ccd6;white-space:normal;overflow-wrap:break-word;">
+This project delivers a production-ready Python utility that automates test data generation for Business Intelligence applications, originally developed for the Mathesis <a href="https://mathesis.cup.gr/courses/course-v1:ComputerScience+CS1.1+25D/about" target="_blank" style="color:#6fc3df;">"Introduction to Python"</a> course.
+</div>
+</div>`;
+			codeModal.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		}
+	});
+});
+
+// Deep-link support: index.html?code=<data-project> auto-opens that
+// project's code modal (used by "View Code" links on the project pages).
+(function() {
+	var codeParam = new URLSearchParams(window.location.search).get('code');
+	if (!codeParam) return;
+	var targetBtn = document.querySelector('.view-code-btn[data-project="' + codeParam + '"]');
+	if (targetBtn) {
+		window.setTimeout(function() {
+			targetBtn.click();
+		}, 300);
+	}
+})();
+
+// ACTION 2: Handle DASHBOARD SHOWCASE buttons
+document.querySelectorAll('.view-dashboard-btn').forEach(btn => {
+	btn.addEventListener('click', function(e) {
+		e.preventDefault();
+		const projectId = this.getAttribute('data-project');
+		const project = projectVideos[projectId];
+		if (project) {
+			videoTitle.textContent = project.title;
+			videoContainer.innerHTML = '';
+
+			var videoInfo = document.getElementById('video-description');
+			var demoNote  = document.querySelector('.demo-note');
+
+			if (project.videoId && project.videoId !== 'YOUR_YOUTUBE_VIDEO_ID') {
+				var videoId = project.videoId;
+				var watchUrl = 'https://www.youtube.com/watch?v=' + videoId;
+				var thumbHi  = 'https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg';
+				var thumbLo  = 'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg';
+
+				var img = document.createElement('img');
+				img.src = thumbHi;
+				img.alt = 'Watch on YouTube';
+				img.style.cssText = 'width:100%;display:block;border-radius:8px 8px 0 0;';
+				img.onerror = function() { this.src = thumbLo; };
+
+				var playBtn = document.createElement('div');
+				playBtn.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;background:rgba(200,0,0,0.92);border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none;';
+				playBtn.innerHTML = '<div style="width:0;height:0;border-style:solid;border-width:14px 0 14px 26px;border-color:transparent transparent transparent #fff;margin-left:6px;"></div>';
+
+				var thumbWrap = document.createElement('div');
+				thumbWrap.style.cssText = 'position:relative;border-radius:8px 8px 0 0;overflow:hidden;cursor:pointer;';
+				thumbWrap.appendChild(img);
+				thumbWrap.appendChild(playBtn);
+				thumbWrap.addEventListener('click', function() { window.open(watchUrl, '_blank'); });
+
+				var watchBar = document.createElement('div');
+				watchBar.style.cssText = 'background:#242943;border-radius:0 0 8px 8px;padding:0.9em 1.4em;display:flex;align-items:center;justify-content:space-between;gap:1em;';
+				watchBar.innerHTML = '<span style="color:#cdd6e0;font-size:0.85em;">Video opens on YouTube in a new tab</span>' +
+					'<a href="' + watchUrl + '" target="_blank" rel="noopener" style="background:#c00;color:#fff;padding:0.5em 1.2em;border-radius:4px;font-size:0.8em;font-weight:700;letter-spacing:0.05em;text-decoration:none;white-space:nowrap;">&#9654; Watch Now</a>';
+
+				videoContainer.appendChild(thumbWrap);
+				videoContainer.appendChild(watchBar);
+
+				if (videoInfo) videoInfo.style.display = 'none';
+				if (demoNote)  demoNote.style.display  = 'none';
+
+			} else {
+				videoContainer.innerHTML = '<div style="background:#f0f4f8;border-radius:8px;padding:3em;text-align:center;color:#888;font-size:1em;">Video walkthrough coming soon.</div>';
+				if (videoInfo) videoInfo.style.display = 'none';
+				if (demoNote)  demoNote.style.display  = 'none';
+			}
+
+			videoModal.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		}
+	});
+});
+
+// Close modals
+codeCloseBtn.addEventListener('click', function() {
+	codeModal.style.display = 'none';
+	document.body.style.overflow = 'auto';
+});
+
+videoCloseBtn.addEventListener('click', function() {
+	videoModal.style.display = 'none';
+	document.body.style.overflow = 'auto';
+	videoContainer.innerHTML = '';
+});
+
+// Close on outside click
+window.addEventListener('click', function(e) {
+	if (e.target === codeModal) {
+		codeModal.style.display = 'none';
+		document.body.style.overflow = 'auto';
+	}
+	if (e.target === videoModal) {
+		videoModal.style.display = 'none';
+		document.body.style.overflow = 'auto';
+		videoContainer.innerHTML = '';
+	}
+});
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+	if (e.key === 'Escape') {
+		if (codeModal.style.display === 'block') {
+			codeModal.style.display = 'none';
+			document.body.style.overflow = 'auto';
+		}
+		if (videoModal.style.display === 'block') {
+			videoModal.style.display = 'none';
+			document.body.style.overflow = 'auto';
+			videoContainer.innerHTML = '';
+		}
+	}
+});
+</script>
+
+</body>
+</html>
